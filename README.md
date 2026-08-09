@@ -92,9 +92,9 @@ Buka file `.env` dan sesuaikan kredensial database PostgreSQL Anda:
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
-DB_DATABASE=mahasigmind       # Pastikan database ini sudah dibuat di pgAdmin/psql
-DB_USERNAME=postgres          # Sesuaikan dengan user postgres Anda
-DB_PASSWORD=your_password     # Sesuaikan dengan password postgres Anda
+DB_DATABASE=db_mahasigmind
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
 ```
 
 ### 5. Migrasi Database
