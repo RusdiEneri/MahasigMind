@@ -9,8 +9,19 @@ class Mood extends Model
 {
     use HasFactory;
 
-    public function user() 
+    protected $fillable = [
+        'user_id',
+        'mood_emoji',
+        'note',
+        'date',
+    ];
+
+    protected $casts = [
+        'date' => 'date',
+    ];
+
+    public function user()
     {
-    return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

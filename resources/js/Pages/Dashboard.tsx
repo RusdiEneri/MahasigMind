@@ -1,8 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import MoodTracker from '@/Components/MoodTracker';
+import { User } from '@/types';
 
-export default function Dashboard({ auth }: PageProps) {
+interface Props {
+    auth: { user: User };
+    hasTrackedToday: boolean;
+}
+
+export default function Dashboard({ auth, hasTrackedToday }: Props) {
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -12,6 +18,7 @@ export default function Dashboard({ auth }: PageProps) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                     <MoodTracker hasTrackedToday={hasTrackedToday} />
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">You're logged in!</div>
                     </div>

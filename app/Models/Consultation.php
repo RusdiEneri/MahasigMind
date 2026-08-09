@@ -9,12 +9,25 @@ class Consultation extends Model
 {
     use HasFactory;
 
-    public function user() 
+    protected $fillable = [
+        'user_id',
+        'psychologist_id',
+        'category',
+        'preferred_time',
+        'description',
+        'status',
+    ];
+
+    protected $casts = [
+        'preferred_time' => 'datetime',
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function psychologist() 
+    public function psychologist()
     {
         return $this->belongsTo(User::class, 'psychologist_id');
     }
