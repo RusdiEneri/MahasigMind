@@ -67,3 +67,94 @@ Ikuti langkah-langkah berikut untuk menjalankan project di lingkungan lokal (Loc
 ```bash
 git clone https://github.com/RusdiEneri/MahasigMind.git
 cd MahasigMind
+```
+
+### 2. Install Dependencies
+Install package untuk Backend (PHP) dan Frontend (Node.js):
+```bash
+# Install Composer dependencies
+composer install
+
+# Install NPM dependencies
+npm install
+```
+
+### 3. Setup Environment Variables
+Salin file konfigurasi environment dan generate App Key:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+### 4. Konfigurasi Database
+Buka file `.env` dan sesuaikan kredensial database PostgreSQL Anda:
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=mahasigmind       # Pastikan database ini sudah dibuat di pgAdmin/psql
+DB_USERNAME=postgres          # Sesuaikan dengan user postgres Anda
+DB_PASSWORD=your_password     # Sesuaikan dengan password postgres Anda
+```
+
+### 5. Migrasi Database
+Jalankan migrasi untuk membuat tabel-tabel yang dibutuhkan:
+```bash
+php artisan migrate
+```
+*(Opsional: Jika sudah tersedia seeder, gunakan `php artisan migrate --seed` untuk mengisi data dummy).*
+
+### 6. Jalankan Aplikasi
+Anda membutuhkan **2 terminal** yang berjalan secara bersamaan:
+
+**Terminal 1 (Vite / Frontend Hot-Reload):**
+```bash
+npm run dev
+```
+
+**Terminal 2 (Laravel Server):**
+```bash
+php artisan serve
+```
+
+🎉 **Aplikasi sekarang dapat diakses di:** [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 🛡️ Akses Admin Panel (Filament)
+
+MahasigMind menggunakan **Filament PHP** untuk panel administrasi yang powerful dan elegan.
+
+- **URL Admin Panel:** [http://localhost:8000/admin](http://localhost:8000/admin)
+- **Membuat Akun Admin Pertama:**
+  Jika Anda belum memiliki akun dengan akses admin, jalankan perintah berikut di terminal:
+  ```bash
+  php artisan make:filament-user
+  ```
+  Ikuti instruksi (Name, Email, Password) yang muncul di terminal untuk membuat akun Super Admin.
+
+---
+
+## 📂 Struktur Folder Penting
+
+- `app/Models/` - Model Eloquent (User, Mood, Journal, Consultation)
+- `app/Http/Controllers/` - Logic controller untuk routing web
+- `resources/js/Pages/` - Komponen halaman Frontend (React + Inertia)
+- `app/Filament/` - Resource, Pages, dan Widgets untuk Admin Panel
+- `routes/web.php` - Definisi routing aplikasi
+
+---
+
+## 🤝 Kontribusi
+
+Kontribusi, isu, dan *pull request* sangat diterima untuk pengembangan MahasigMind ke depannya. Jika Anda menemukan *bug* atau memiliki ide fitur baru, silakan buka *Issue* di repository ini.
+
+## 📄 Lisensi
+
+Aplikasi MahasigMind adalah perangkat lunak *open-source* yang dilisensikan di bawah [MIT license](https://opensource.org/licenses/MIT).
+Framework Laravel yang digunakan juga merupakan perangkat lunak *open-source* berlisensi MIT.
+
+---
+<p align="center">
+  <i>Developed with ❤️ for Indonesian Students' Mental Health.</i>
+</p>
