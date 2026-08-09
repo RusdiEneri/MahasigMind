@@ -9,7 +9,19 @@ class Journal extends Model
 {
     use HasFactory;
 
-    public function user() 
+    protected $fillable = [
+        'user_id',
+        'title',
+        'category',
+        'content',
+        'is_shared_with_psychologist',
+    ];
+
+    protected $casts = [
+        'is_shared_with_psychologist' => 'boolean',
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

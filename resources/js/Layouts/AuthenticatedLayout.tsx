@@ -96,6 +96,9 @@ export default function Authenticated({ user, header, children }: PropsWithChild
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                             Dashboard
                         </ResponsiveNavLink>
+                        <NavLink href={route('journals.index')} active={route().current('journals.index')}>
+                            Jurnal
+                        </NavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">

@@ -4,6 +4,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\SocialiteController;
+use App\Http\Controllers\MoodController;
+use App\Models\Mood;
+use Carbon\Carbon;
+use App\Http\Controllers\JournalController; 
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,14 +31,30 @@ Route::get('/', function () {
     ]);
 });
 
+
+
+Route::get('/auth/google/redirect', [SocialiteController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [SocialiteController::class, 'callback'])->name('google.callback');
+
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $hasTrackedToday = Mood::where('user_id', auth()->id())
+        ->whereDate('date', Carbon::today())
+        ->exists();
+
+    return Inertia::render('Dashboard', [
+        'hasTrackedToday' => $hasTrackedToday, // 👈 Kirim ke React
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/moods', [MoodController::class, 'store'])->name('moods.store');
+    Route::get('/journals', [JournalController::class, 'index'])->name('journals.index');
+    Route::post('/journals', [JournalController::class, 'store'])->name('journals.store');
+    Route::put('/journals/{journal}', [JournalController::class, 'update'])->name('journals.update');
+    Route::delete('/journals/{journal}', [JournalController::class, 'destroy'])->name('journals.destroy');
 });
 
 require __DIR__.'/auth.php';
