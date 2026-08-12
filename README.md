@@ -8,86 +8,93 @@
 
 # 🧠 MahasigMind
 
-**MahasigMind** adalah platform kesehatan mental komprehensif yang dirancang khusus untuk mahasiswa. Aplikasi ini memfasilitasi pemantauan kesehatan emosional melalui pencatatan *mood* harian, penulisan jurnal reflektif, serta penyediaan akses konsultasi dengan psikolog profesional. 
+**MahasigMind** adalah platform kesehatan mental komprehensif berbasis web yang dirancang khusus untuk mahasiswa Indonesia. Aplikasi ini memfasilitasi pemantauan kesehatan emosional melalui pencatatan *mood* harian, penulisan jurnal reflektif, forum diskusi anonim/terbuka, serta penyediaan akses bimbingan & konsultasi langsung bersama psikolog profesional.
 
-Platform ini juga dilengkapi dengan **Dashboard Psikolog** untuk mengelola antrian konsultasi dan **Admin Panel** untuk manajemen sistem secara menyeluruh.
+Aplikasi ini juga dilengkapi **Dashboard Psikolog** untuk pengurusan slot jadwal & bimbingan klien, serta **Filament Admin Panel** untuk pengolahan pengguna dan moderasi artikel edukasi.
 
-## ✨ Fitur Utama (MVP)
+---
 
-### 👨‍🎓 Untuk Mahasiswa
-- **Autentikasi Aman**: Login/Register via Email atau Google OAuth.
-- **Mood Tracker**: Pencatatan mood harian dengan visualisasi dan animasi interaktif.
-- **Journaling**: Ruang privat untuk menulis jurnal harian dengan sistem kategorisasi.
-- **Konsultasi**: Pengajuan permintaan sesi konsultasi dengan psikolog.
+## ✨ Fitur Utama Berdasarkan Role
 
-### 🧑‍⚕️ Untuk Psikolog
-- **Dashboard Analitik**: Melihat tren dan agregat mood mahasiswa (global).
-- **Manajemen Konsultasi**: Menerima, memproses, dan menyelesaikan permintaan konsultasi dari mahasiswa.
+### 👨‍🎓 Role Mahasiswa
+- **Autentikasi & Role Redirect**: Sesi login terpisah yang otomatis mengarahkan mahasiswa ke dashboard khusus.
+- **Beranda (Home)**: Kartu sapaan ramah, *MoodPicker* harian, menu akses cepat, dan pembacaan artikel edukasi via overlay.
+- **Chat Psikolog**: Pengajuan konsultasi, pemilihan psikolog profesional (*PsychologistPickerSheet*), dan ruang obrolan langsung dengan *auto-reload / polling*.
+- **Forum Diskusi**: Kategori diskusi (*Kuliah, Keluarga, Relasi, Keuangan*), pembuatan postingan baru, dan fitur balasan postingan.
+- **Jurnal Harian**: Galeri catatan refleksi harian, form penulisan jurnal, dan tampilan detail refleksi.
+- **Notifikasi**: Bottom sheet notifikasi sistem dengan fitur "Tandai semua sudah dibaca".
+- **Pengaturan Profil**: Pengelolaan informasi akun, ubah kata sandi, dan hapus akun.
 
-### 🛡️ Untuk Admin
-- **Filament Admin Panel**: Antarmuka admin modern untuk mengelola *users*, artikel, dan data sistem lainnya secara *real-time*.
+### 🧑‍⚕️ Role Psikolog
+- **Dashboard Konselor**: Metriks analitik (*Klien Aktif, Sesi Hari Ini, Jurnal Masuk, Artikel Saya*), jadwal sesi harian, dan preview permintaan bimbingan.
+- **Kelola Sesi Chat**: Daftar klien aktif dan ruang chat bimbingan terintegrasi.
+- **Kelola Jadwal Operasional**: Pemilihan tanggal dan *TimeSlotPicker* interaktif untuk menghidupkan/mematikan slot jam ketersediaan (`09:00` s/d `16:00`).
+- **Permintaan Konsultasi**: Filter status pengajuan (*Semua, Menunggu, Disetujui, Ditolak*) dengan aksi *Setujui* / *Tolak* ber-modal konfirmasi.
+- **Profil Mahasiswa & Peringatan Risiko**: Pratinjau data mahasiswa, galeri jurnal refleksi mahasiswa, dan *Warning Card* otomatis berwarna kuning bila ada indikasi kecemasan berturut-turut.
+- **Ekspor Data (CSV)**: Fitur pencarian kueri dan pengunduhan laporan rekapitulasi konsultasi dalam format CSV.
+- **Kelola Artikel Edukasi**: Pembuatan, pengubahan, dan penghapusan artikel dengan badge status (*Terbit, Menunggu Review, Draf, Ditolak*).
+
+### 🛡️ Role Admin Panel (Filament v3)
+- **Dashboard Widgets**: *StatsOverviewWidget* untuk statistik *Total Pengguna*, *Total Psikolog*, dan *Artikel Menunggu Verifikasi*.
+- **Kelola User (`UserResource`)**: Manajemen data pengguna, penapis role, dan pencarian nama/email.
+- **Kelola Psikolog (`PsychologistResource`)**: Manajemen data psikolog terdaftar beserta aksi verifikasi akun.
+- **Kelola & Verifikasi Artikel (`ArticleResource`)**: Pengelolaan moderasi artikel dengan aksi **Terima** (*Terbit*) & **Tolak** (*Ditolak*). Artikel yang disetujui otomatis terpublikasi langsung ke mahasiswa.
 
 ---
 
 ## 🛠️ Tech Stack
 
-Aplikasi ini dibangun menggunakan arsitektur **Monolith Modern** dengan *Inertia.js* sebagai jembatan antara Backend dan Frontend (SPA feel tanpa kompleksitas API).
+Aplikasi ini dibangun menggunakan arsitektur **Monolith Modern** (*Laravel 11 + Inertia.js + React 19 + TypeScript + Tailwind CSS v3*).
 
 | Kategori | Teknologi |
 | :--- | :--- |
 | **Backend Framework** | Laravel 11 (PHP 8.2+) |
 | **Frontend Framework** | React 19 + TypeScript |
 | **Glue (Bridge)** | Inertia.js |
-| **Styling** | Tailwind CSS v4 |
+| **Styling** | Tailwind CSS v3 |
 | **Database** | PostgreSQL |
 | **Admin Panel** | Filament PHP v3 |
-| **Authentication** | Laravel Breeze |
+| **Authentication** | Laravel Breeze + Google OAuth |
 | **Bundler** | Vite |
 
 ---
 
-## 📋 Prasyarat Instalasi
+## 📋 Prasyarat Sistem
 
-Sebelum memulai proses instalasi, pastikan sistem Anda telah memenuhi persyaratan berikut:
+Sebelum menjalankan project di lokal, pastikan perangkat Anda terpasang:
 
-- **PHP** >= `8.2` 
-  - *Ekstensi wajib: `pgsql`, `pdo_pgsql`, `mbstring`, `xml`, `curl`, `zip`, `bcmath`*
-- **Composer** (PHP Dependency Manager)
-- **Node.js** >= `18.x` & **NPM** (Node Package Manager)
-- **PostgreSQL** >= `14` (Lokal via Postgres App / DBngin / XAMPP, atau Cloud)
-- **Git**
+1. **PHP** >= `8.2` (dengan ekstensi `pdo_pgsql`, `pgsql`, `mbstring`, `xml`, `curl`, `zip`)
+2. **Composer** (PHP Dependency Manager)
+3. **Node.js** >= `18.x` & **NPM**
+4. **PostgreSQL Database** (Lokal via Docker, Laragon PostgreSQL, DBngin, atau PostgreSQL Server)
 
 ---
 
-## 🚀 Cara Instalasi & Menjalankan Aplikasi
+## 🚀 Langkah Instalasi & Cara Menjalankan Project
 
-Ikuti langkah-langkah berikut untuk menjalankan project di lingkungan lokal (Local Development Environment):
-
-### 1. Clone Repository
+### 1. Clone & Masuk ke Folder Project
 ```bash
 git clone https://github.com/RusdiEneri/MahasigMind.git
 cd MahasigMind
 ```
 
-### 2. Install Dependencies
-Install package untuk Backend (PHP) dan Frontend (Node.js):
+### 2. Install Dependencies (Backend & Frontend)
 ```bash
-# Install Composer dependencies
+# Install PHP dependencies
 composer install
 
-# Install NPM dependencies
+# Install Node.js packages
 npm install
 ```
 
-### 3. Setup Environment Variables
-Salin file konfigurasi environment dan generate App Key:
+### 3. Konfigurasi File Environment (`.env`)
+Salin file `.env.example` menjadi `.env`:
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
 
-### 4. Konfigurasi Database
-Buka file `.env` dan sesuaikan kredensial database PostgreSQL Anda:
+Pastikan konfigurasi PostgreSQL di file `.env` sudah sesuai dengan PostgreSQL Docker/Laragon Anda:
 ```env
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
@@ -97,64 +104,64 @@ DB_USERNAME=postgres
 DB_PASSWORD=postgres
 ```
 
-### 5. Migrasi Database
-Jalankan migrasi untuk membuat tabel-tabel yang dibutuhkan:
+### 4. Jalankan Migrasi & Database Seeder
+Jalankan perintah berikut untuk membuat tabel-tabel dan mengisi akun uji awal:
 ```bash
-php artisan migrate
+php artisan migrate:fresh --seed
 ```
-*(Opsional: Jika sudah tersedia seeder, gunakan `php artisan migrate --seed` untuk mengisi data dummy).*
 
-### 6. Jalankan Aplikasi
-Anda membutuhkan **2 terminal** yang berjalan secara bersamaan:
+### 5. Jalankan Server Aplikasi & Asset Bundler
 
-**Terminal 1 (Vite / Frontend Hot-Reload):**
+Buka **2 jendela terminal** di folder project:
+
+**Terminal 1 (Vite Dev Server - Asset Compiler):**
 ```bash
 npm run dev
 ```
 
-**Terminal 2 (Laravel Server):**
+**Terminal 2 (Laravel Backend Server):**
 ```bash
 php artisan serve
 ```
 
-🎉 **Aplikasi sekarang dapat diakses di:** [http://localhost:8000](http://localhost:8000)
+🎉 **Aplikasi MahasigMind sekarang siap diakses di:** [http://localhost:8000](http://localhost:8000) (atau [http://127.0.0.1:8000](http://127.0.0.1:8000)).
 
 ---
 
-## 🛡️ Akses Admin Panel (Filament)
+## 🔑 Akun Pengujian Dummy Default (Seeded)
 
-MahasigMind menggunakan **Filament PHP** untuk panel administrasi yang powerful dan elegan.
+Kata sandi (password) untuk seluruh akun pengujian bawaan di bawah ini adalah: `password`
 
-- **URL Admin Panel:** [http://localhost:8000/admin](http://localhost:8000/admin)
-- **Membuat Akun Admin Pertama:**
-  Jika Anda belum memiliki akun dengan akses admin, jalankan perintah berikut di terminal:
-  ```bash
-  php artisan make:filament-user
-  ```
-  Ikuti instruksi (Name, Email, Password) yang muncul di terminal untuk membuat akun Super Admin.
-
----
-
-## 📂 Struktur Folder Penting
-
-- `app/Models/` - Model Eloquent (User, Mood, Journal, Consultation)
-- `app/Http/Controllers/` - Logic controller untuk routing web
-- `resources/js/Pages/` - Komponen halaman Frontend (React + Inertia)
-- `app/Filament/` - Resource, Pages, dan Widgets untuk Admin Panel
-- `routes/web.php` - Definisi routing aplikasi
+| Role | Alamat Email | Password | URL Tujuan Setelah Login |
+| :--- | :--- | :--- | :--- |
+| **Admin** | `admin@mahasigmind.id` | `password` | [http://localhost:8000/admin](http://localhost:8000/admin) |
+| **Psikolog 1** | `sarah.wijaya@mahasigmind.id` | `password` | [http://localhost:8000/psikolog/dashboard](http://localhost:8000/psikolog/dashboard) |
+| **Psikolog 2** | `budi.santoso@mahasigmind.id` | `password` | [http://localhost:8000/psikolog/dashboard](http://localhost:8000/psikolog/dashboard) |
+| **Mahasiswa 1** | `mahasiswa@mahasigmind.id` | `password` | [http://localhost:8000/mahasiswa/dashboard](http://localhost:8000/mahasiswa/dashboard) |
+| **Mahasiswa 2** | `siti@mahasigmind.id` | `password` | [http://localhost:8000/mahasiswa/dashboard](http://localhost:8000/mahasiswa/dashboard) |
+| **Mahasiswa 3** | `rizky@mahasigmind.id` | `password` | [http://localhost:8000/mahasiswa/dashboard](http://localhost:8000/mahasiswa/dashboard) |
 
 ---
 
-## 🤝 Kontribusi
+## 🧪 Cara Menjalankan Automated Testing & TypeScript Check
 
-Kontribusi, isu, dan *pull request* sangat diterima untuk pengembangan MahasigMind ke depannya. Jika Anda menemukan *bug* atau memiliki ide fitur baru, silakan buka *Issue* di repository ini.
+### Menjalankan Test Suite (PHPUnit / Pest)
+```bash
+php artisan test
+```
+
+### Menjalankan TypeScript Compiler Check
+```bash
+npx tsc --noEmit
+```
+
+### Menjalankan Production Build Verification
+```bash
+npm run build
+```
+
+---
 
 ## 📄 Lisensi
 
-Aplikasi MahasigMind adalah perangkat lunak *open-source* yang dilisensikan di bawah [MIT license](https://opensource.org/licenses/MIT).
-Framework Laravel yang digunakan juga merupakan perangkat lunak *open-source* berlisensi MIT.
-
----
-<p align="center">
-  <i>Developed with ❤️ for Indonesian Students' Mental Health.</i>
-</p>
+MahasigMind dilesensikan di bawah [MIT License](https://opensource.org/licenses/MIT).

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('google_id')->nullable()->unique(); // Untuk Google OAuth nanti
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['student', 'psychologist', 'admin'])->default('student'); // 👈 TAMBAHKAN INI
+            $table->enum('role', ['mahasiswa', 'psikolog', 'admin'])->default('mahasiswa');
             $table->rememberToken();
             $table->timestamps();
         });

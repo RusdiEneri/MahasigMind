@@ -36,8 +36,8 @@ class SocialiteController extends Controller
 
             Auth::login($user);
 
-            // Redirect ke dashboard/home setelah login sukses
-            return redirect('/dashboard'); 
+            // Redirect ke dashboard/home sesuai role
+            return redirect($user->getDashboardUrl()); 
 
         } catch (\Exception $e) {
             return redirect('/login')->with('error', 'Gagal login dengan Google.');

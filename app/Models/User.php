@@ -8,9 +8,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+
+class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin();
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -47,7 +55,7 @@ class User extends Authenticatable
     ];
 
     public function moods() {
-    return $this->hasMany(Mood::class);
+        return $this->hasMany(Mood::class);
     }
 
     public function journals() {
@@ -60,5 +68,33 @@ class User extends Authenticatable
 
     public function handledConsultations() {
         return $this->hasMany(Consultation::class, 'psychologist_id');
+    }
+
+    public function isMahasiswa(): bool
+    {
+        return $this->role === 'mahasiswa' || $this->role === 'student';
+    }
+
+    public function isPsikolog(): bool
+    {
+        return $this->role === 'psikolog' || $this->role === 'psychologist';
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function getDashboardUrl(): string
+    {
+        if ($this->isAdmin()) {
+            return '/admin';
+        }
+
+        if ($this->isPsikolog()) {
+            return route('psikolog.dashboard');
+        }
+
+        return route('mahasiswa.dashboard');
     }
 }

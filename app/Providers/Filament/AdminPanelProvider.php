@@ -10,12 +10,13 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
@@ -27,19 +28,55 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('MahasigMind Admin')
+            ->font('Plus Jakarta Sans')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#0077b6'),
+                'info' => Color::hex('#00b4d8'),
+                'success' => Color::Emerald,
+                'warning' => Color::Amber,
+                'danger' => Color::Rose,
+                'gray' => Color::Slate,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                \App\Filament\Widgets\AdminWelcomeWidget::class,
+                \App\Filament\Widgets\PendingAlertWidget::class,
+                \App\Filament\Widgets\StatsOverviewWidget::class,
             ])
+            ->renderHook(
+                PanelsRenderHook::HEAD_END,
+                fn (): string => Blade::render('
+                    <style>
+                        :root {
+                            --font-family: "Plus Jakarta Sans", sans-serif;
+                        }
+                        .fi-logo {
+                            font-weight: 800 !important;
+                            color: #03045e !important;
+                            letter-spacing: -0.02em !important;
+                        }
+                        .dark .fi-logo {
+                            color: #caf0f8 !important;
+                        }
+                        .fi-section, .fi-wi-stats-overview-stat, .fi-ta-content {
+                            border-radius: 1rem !important;
+                        }
+                        .fi-sidebar-header {
+                            border-bottom: 1px solid rgba(226, 232, 240, 0.6) !important;
+                        }
+                        .fi-sidebar-item-active .fi-sidebar-item-button {
+                            background-color: rgba(202, 240, 248, 0.6) !important;
+                            color: #0077b6 !important;
+                            font-weight: 700 !important;
+                        }
+                    </style>
+                ')
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

@@ -31,4 +31,9 @@ class Consultation extends Model
     {
         return $this->belongsTo(User::class, 'psychologist_id');
     }
+
+    public function messages()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
 }

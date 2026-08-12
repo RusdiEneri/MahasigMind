@@ -12,10 +12,9 @@ class JournalController extends Controller
     {
         $journals = auth()->user()->journals()
             ->latest()
-            ->paginate(6)
-            ->withQueryString();
+            ->get();
 
-        return Inertia::render('Journals/Index', [
+        return Inertia::render('Mahasiswa/Journal/Index', [
             'journals' => $journals,
         ]);
     }
@@ -47,6 +46,16 @@ class JournalController extends Controller
         $journal->update($validated);
 
         return back()->with('success', 'Jurnal berhasil diperbarui! ✏️');
+    }
+
+    public function show(Journal $journal)
+    {
+        // Proteksi: hanya pemilik yang boleh lihat
+        abort_unless($journal->user_id === auth()->id(), 403);
+
+        return Inertia::render('Mahasiswa/Journal/Show', [
+            'journal' => $journal,
+        ]);
     }
 
     public function destroy(Journal $journal)

@@ -1,10 +1,13 @@
 import { Config } from 'ziggy-js';
 
+export type UserRole = 'student' | 'psychologist' | 'admin' | 'mahasiswa' | 'psikolog';
+
 export interface User {
     id: number;
     name: string;
     email: string;
-    email_verified_at: string;
+    email_verified_at?: string;
+    role?: UserRole;
 }
 
 export interface Journal {
