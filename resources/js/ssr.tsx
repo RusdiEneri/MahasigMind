@@ -3,7 +3,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { route } from 'ziggy-js';
-import { Ziggy } from './ziggy';
+import Ziggy from './ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -15,18 +15,26 @@ createServer((page) =>
         resolve: (name) =>
             resolvePageComponent(`./Pages/${name}.tsx`, import.meta.glob('./Pages/**/*.tsx')),
         setup: ({ App, props }) => {
-            const pageProps = page.props as unknown as {
-                ziggy?: typeof Ziggy;
-                location?: string;
-            };
+            // Ambil data ziggy dari page props secara dinamis
+            const pageZiggy = (page.props as any).ziggy;
 
+            // Satukan konfigurasi untuk runtime SSR
             const ziggyConfig = {
-                ...(pageProps.ziggy ?? Ziggy),
-                location: new URL(pageProps.location ?? pageProps.ziggy?.location ?? Ziggy.url),
+                ...(pageZiggy ?? Ziggy),
+                location: new URL(
+                    (page.props as any).location ?? 
+                    pageZiggy?.location ?? 
+                    (Ziggy as any).url
+                ),
             };
 
-            (globalThis as unknown as { route: typeof route }).route = (name, params, absolute, config = ziggyConfig) =>
-                route(name, params, absolute, config);
+            // Injeksi fungsi global route dengan bypass type-overload mismatch
+            (globalThis as any).route = (
+                name?: string,
+                params?: any,
+                absolute?: boolean,
+                config = ziggyConfig
+            ) => route(name as any, params, absolute, config as any);
 
             return <App {...props} />;
         },
