@@ -1,18 +1,24 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
+import Logo from '@/Components/app/Logo';
+import { Link } from '@inertiajs/react';
 
 export default function Guest({ children }: PropsWithChildren) {
     return (
-        <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+        <div className="min-h-screen w-full bg-gradient-to-b from-brand-100 via-brand-100 to-white flex flex-col items-center justify-center p-4 sm:p-6">
+            <div className="w-full max-w-md flex flex-col items-center">
+                <div className="mb-6 flex justify-center">
+                    <Link href="/" className="transition hover:opacity-90">
+                        <Logo size="lg" variant="withText" />
+                    </Link>
+                </div>
 
-            <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {children}
+                <div className="w-full rounded-2xl border border-slate-100 bg-white/95 p-6 shadow-lg backdrop-blur-sm sm:p-8">
+                    {children}
+                </div>
+
+                <p className="mt-6 text-center text-xs text-slate-500">
+                    &copy; {new Date().getFullYear()} MahasigMind. Platform Kesehatan Mental Mahasiswa.
+                </p>
             </div>
         </div>
     );
